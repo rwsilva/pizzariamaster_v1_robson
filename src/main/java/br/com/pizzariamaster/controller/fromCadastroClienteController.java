@@ -1,9 +1,13 @@
 package br.com.pizzariamaster.controller;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.com.pizzariamaster.modelo.Clientes;
 import br.com.pizzariamaster.util.JPAUtil;
@@ -33,21 +37,16 @@ public class fromCadastroClienteController{
 	}
 
 
-	//@RequestMapping("ListaClientes")
-	//public ModelAndView Lista() {
-		//Clientes cliente = new Clientes();
+	@RequestMapping("/listaClientes")
+	public ModelAndView Lista() {
+		EntityManager em = new JPAUtil().getEntityManager();
 		
-		//EntityManager em = new JPAUtil().getEntityManager();
-		//TypedQuery<Clientes> query = em.createQuery("select c from clientes c", Clientes.class);
+		String jpql = "select c from Clientes c";	
+		TypedQuery<Clientes> query = em.createQuery(jpql, Clientes.class);
+		List<Clientes> lista = query.getResultList();
 		
-		//em.getTransaction().begin();
-		//List<Clientes> lista = (List<Clientes>) em.find(Clientes.class, 2);
-		//em.getTransaction().commit();
-		
-		//List<Clientes> results = query.getResultList();
-		
-		//ModelAndView mv = new ModelAndView("lista");
-		//mv.addObject("todosCliente", lista);
-	//return mv;	
-	//}
+		ModelAndView mv = new ModelAndView("lista");
+		mv.addObject("todosCliente", lista);
+	return mv;	
+	}
 }
